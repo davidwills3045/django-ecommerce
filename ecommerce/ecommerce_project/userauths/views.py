@@ -27,9 +27,10 @@ def register_view(request):
     }
     return render(request, "userauths/sign-up.html",context)
 
+
 def login_view(request):
-    if request.user.is_authenticated:
-        return redirect("index")
+    # if request.user.is_authenticated:
+    #     return redirect("index")
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
