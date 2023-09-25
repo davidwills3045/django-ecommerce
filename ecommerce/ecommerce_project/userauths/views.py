@@ -50,7 +50,7 @@ def login_view(request):
         except:
             messages.warning(request,f"User with {email} does not exist")
 
-    return render(request,"userauths/sign-in.html",)
+    return render(request,"userauths/sign-in.html")
 
 def logout_view(request):
     logout(request)
