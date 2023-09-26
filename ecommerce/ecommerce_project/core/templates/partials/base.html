@@ -296,11 +296,11 @@
                                             <li><a href="page-account.html"><i class="fi fi-rs-label mr-10"></i>My Voucher</a></li>
                                             <li><a href="shop-wishlist.html"><i class="fi fi-rs-heart mr-10"></i>My Wishlist</a></li>
                                             <li><a href="page-account.html"><i class="fi fi-rs-settings-sliders mr-10"></i>Setting</a></li>
-                                            {% comment %} {% if request.user.is_authenticated %} {% endcomment %}
+                                            {% if request.user.is_authenticated %}
                                             <li><a href="http://127.0.0.1:8000/user/logout/"><i class="fi fi-rs-sign-out mr-10"></i>Sign out</a></li>
-                                            {% comment %} {% else %}  {% endcomment %}
-                                            {% comment %} <li><a href="http://127.0.0.1:8000/user/sign-in/"><i class="fi fi-rs-sign-in mr-10"></i>Sign in</a></li> {% endcomment %}
-                                            {% comment %} {% endif %} {% endcomment %}
+                                            {% else %} 
+                                            <li><a href="http://127.0.0.1:8000/user/sign-in/"><i class="fi fi-rs-sign-in mr-10"></i>Sign in</a></li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                 </div>
@@ -611,7 +611,7 @@
                         </div>
                     </div>
                 </div>
-                {% comment %} {% if messages  %}
+                {% if messages  %}
                     {% for message in messages  %}
                         <div class="alert alert-{{message.tags}}">
                           <strong>{{message}}</strong>
@@ -622,7 +622,7 @@
                     setTimeout (() => {
                         $(".alert").alert("close"); 
                     },3000)
-                </script> {% endcomment %}
+                </script>
                
             </div>
         </div>
@@ -830,7 +830,7 @@
                                     <button class="btn" type="submit">Subscribe</button>
                                 </form>
                             </div>
-                            <img src="{% static 'assets/imgs/banner/banner-9.png' %}" alt="newsletter" />
+                            {% comment %} <img src="{% static 'assets/imgs/banner/banner-9.png' %}" alt="newsletter" /> {% endcomment %}
                         </div>
                     </div>
                 </div>

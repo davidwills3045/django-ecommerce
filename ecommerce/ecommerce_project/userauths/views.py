@@ -30,6 +30,8 @@ def register_view(request):
 
 
 def login_view(request):
+    # print(request)
+
     if request.user.is_authenticated:
         messages.success(request, "Hey you are already logged in.")
         return redirect("index")
@@ -40,11 +42,13 @@ def login_view(request):
         try:
             user = User.objects.get(email=email)
             user = authenticate(request,email=email,password=password)
+            # request.session["user"] = user
 
             if user is not None:
                 login(request,user)
                 messages.success(request, "You are logged in.")
-                return redirect("index")
+                # print(request.user.is_authenticated)
+                return render(request,"index.html")
             else:
                 messages.warning(request, "User Does Not Exist, Create an account.")
         except:
