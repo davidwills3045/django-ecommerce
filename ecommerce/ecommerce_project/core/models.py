@@ -87,12 +87,12 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True, default="This is the products")
 
     price = models.DecimalField(max_digits=99999999999,decimal_places=2,default="1.99")
-    old_price = models.DecimalField(max_digits=99999999999,decimal_places=2,defualt="2.99")
+    old_price = models.DecimalField(max_digits=99999999999,decimal_places=2,default="2.99")
 
     specifications = models.TextField(null=True, blank=True)
-    tags= models.ForeignKey(Tags, on_delete=models.SET_NULL, null=True)
+    # tags= models.ForeignKey(Tags, on_delete=models.SET_NULL, null=True)
 
-    product_status = models.CharField(choices="STATUS",max_length=10, defualt="in_review")
+    product_status = models.CharField(choices=STATUS,max_length=10, default="in_review")
 
     status = models.BooleanField(default=True)
     in_stock = models.BooleanField(default=True)
@@ -127,9 +127,9 @@ class Productimages(models.Model):
         verbose_name_plural = "Product images"
 
 
-######################################## cart, order,orderitems and address ###################################################
-######################################## cart, order,orderitems and address ###################################################
-######################################## cart, order,orderitems and address ###################################################
+######################################## cartorder,orderitems ###################################################
+######################################## cartorder,orderitems ###################################################
+######################################## cartorder,orderitems ###################################################
 
 
 class Cartorder(models.Model):
@@ -137,12 +137,72 @@ class Cartorder(models.Model):
     price = models.DecimalField(max_digits=99999999999,decimal_places=2,default="1.99")
     paid_status = models.BooleanField(default=False)
     order_date = models.DateTimeField(auto_now_add=True)
-    product_status = models.CharField(choices=STATUS,max_length=10, defualt="in_review")
+    product_status = models.CharField(choices=STATUS_CHOICE,max_length=30, default="processing")
 
+    class Meta:
+        verbose_name_plural = "Cart order"
+
+
+class Cartorderitems(models.Model):
+    order = models.ForeignKey(Cartorder, on_delete=models.CASCADE)
+    product_status= models.CharField(max_length=200)
+    invoice_no= models.CharField(max_length=200)
+    item= models.CharField(max_length=200)
+    image = models.CharField(max_length=200)
+    qty= models.IntegerField(default=0)
+    price = models.DecimalField(max_digits=99999999999,decimal_places=2,default="1.99")
+    total = models.DecimalField(max_digits=99999999999,decimal_places=2,default="1.99")
+
+    class Meta:
+        verbose_name_plural = "Cart order items"
+
+    def order_img(self):
+        return mark_safe('<img src="/media/%s" width="50" height="50" />' % (self.image))
     
 
-class Cartorderitems(models.Model):
-    pass
+######################################## Product Review, wishlist, Address ###################################################
+######################################## Product Review, wishlist, Address ###################################################
+######################################## Product Review, wishlist, Address ###################################################
+    
 
-class Cartorderitems(models.Model):
-    pass
+class ProductReview(models.Model):
+    user= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    product= models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    review = models.TextField()
+    rating = models.IntegerField(choices=RATING, default=None)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Product Reviews"
+
+   
+    def __str__(self):
+        return self.product.title
+    
+    def get_rating(self):
+        return self.rating
+   
+
+class Wishlist(models.Model):
+    user= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    product= models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Wishlists"
+
+   
+    def __str__(self):
+        return self.product.title
+    
+    def get_rating(self):
+        return self.rating
+    
+class Address(models.Model):
+    user= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    address = models.CharField(max_length=100, null=True)
+    status = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = "Address"
+   
