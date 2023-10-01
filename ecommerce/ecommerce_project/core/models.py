@@ -52,10 +52,12 @@ class Category(models.Model):
 class Tags(models.Model):
     pass
 
-class vendor(models.Model):
+class Vendor(models.Model):
     vid = ShortUUIDField(unique=True,length=10,max_length=20,prefix="ven",alphabet="abcdefgh12345")
+
     title = models.CharField(max_length=100,default="Nestify")
     image= models.ImageField(upload_to=user_directory_path, default="vendor.jpg")
+    cover_image= models.ImageField(upload_to=user_directory_path, default="vendor.jpg")
     description = models.TextField(null=True, blank=True, default="i am an Amazing vendor")
 
     address = models.CharField(max_length=100, default="123 main street.")
@@ -65,7 +67,9 @@ class vendor(models.Model):
     authentic_rating = models.CharField(max_length=100, default="100")
     days_return = models.CharField(max_length=100, default="100")
     warranty_period = models.CharField(max_length=100, default="100")
+
     user= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    date = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Vendors"
@@ -80,7 +84,8 @@ class Product(models.Model):
     pid = ShortUUIDField(unique=True,length=10,max_length=20,alphabet="abcdefgh12345")
 
     user= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    category= models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category= models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name="category")
+    vendor= models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True,related_name="product")
 
     title = models.CharField(max_length=100, default="Fresh Pear")
     image= models.ImageField(upload_to=user_directory_path, default="product.jpg")

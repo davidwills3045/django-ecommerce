@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models import Category,vendor,Product,Productimages,Cartorder,Cartorderitems,ProductReview,Wishlist,Address
+from .models import Category,Vendor,Product,Productimages,Cartorder,Cartorderitems,ProductReview,Wishlist,Address
 
 class ProductimagesAdmin(admin.TabularInline):
     model = Productimages
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductimagesAdmin]
-    list_display = ["user","title","product_image","price","featured","product_status"]
+    list_display = ["user","title","product_image","price","category","vendor","featured","product_status"]
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ["title","category_image"]
@@ -30,7 +30,7 @@ class AddressAdmin(admin.ModelAdmin):
     list_display = ["user","address","status"]
 
 admin.site.register(Category,CategoryAdmin)
-admin.site.register(vendor,VendorAdmin)
+admin.site.register(Vendor,VendorAdmin)
 admin.site.register(Product,ProductAdmin)
 # admin.site.register(Productimages,ProductimagesAdmin)
 admin.site.register(Cartorder,CartorderAdmin)
