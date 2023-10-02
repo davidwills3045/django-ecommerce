@@ -61,3 +61,14 @@ def vendor_details_view(request, vid):
 
     template = loader.get_template("vendor-details-2.html")
     return HttpResponse(template.render(context,request))
+
+def product_detail_view(request,pid):
+    product = Product.objects.get(pid=pid)
+    p_image = product.p_image.all()
+
+    context = {
+        "products":product,
+        "p_image":p_image
+    }
+    template = loader.get_template("product-detail.html")
+    return HttpResponse(template.render(context,request))

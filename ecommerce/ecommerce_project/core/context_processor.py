@@ -2,6 +2,8 @@ from .models import Category,Vendor,Product,Productimages,Cartorder,Cartorderite
 
 def default(request):
     categories = Category.objects.all()
+    # address = Address.objects.get(user=request.user)
     return{
         "categories":categories,
+        # "address":address,
     }

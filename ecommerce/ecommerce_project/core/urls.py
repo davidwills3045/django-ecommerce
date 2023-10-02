@@ -5,6 +5,7 @@ urlpatterns = [
     # Homepage
     path('', views.index, name='index'),
     path('product/', views.product_list_view, name='product-list'),
+    path('product/<pid>/', views.product_detail_view, name='product-detail'),
 
     # Category
     path('category/', views.category_list_view, name='category-list'),
@@ -12,6 +13,6 @@ urlpatterns = [
 
     # Vendor
     path('vendor/', views.vendor_list_view, name='vendor-list'),
-    path('vendor/<vid>', views.vendor_details_view, name='vendor-details'),
+    path('vendor/<vid>/', views.vendor_details_view, name='vendor-details'),
 
 ]
