@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from .models import Category,Vendor,Product,Productimages,Cartorder,Cartorderitems,ProductReview,Wishlist,Address
+from .models import Category,Vendor,Product,Productimages,Cartorder,Cartorderitems,ProductReview,Wishlist,Address,Tags
+from django.shortcuts import get_object_or_404
+from taggit.models import Tag
 
 
 def index(request):
@@ -64,11 +66,27 @@ def vendor_details_view(request, vid):
 
 def product_detail_view(request,pid):
     product = Product.objects.get(pid=pid)
+    products = Product.objects.filter(category=product.category).exclude(pid=pid)
     p_image = product.p_image.all()
 
     context = {
         "products":product,
-        "p_image":p_image
+        "p_image":p_image,
+        "pro":products,
     }
     template = loader.get_template("product-detail.html")
+    return HttpResponse(template.render(context,request))
+
+def tag_list(request, tag_slug=None):
+    products= Product.objects.filter(product_status="published",).order_by("-id")
+
+    tag= None
+    if tag_slug:
+        tag= get_object_or_404(Tag, slug=tag_slug)
+        products = products.filter(tags__in=[tag])
+
+    context = {
+        "products":products
+    }
+    template = loader.get_template("tag.html")
     return HttpResponse(template.render(context,request))
