@@ -3,7 +3,10 @@ from django.shortcuts import get_object_or_404
 
 def default(request):
     categories = Category.objects.all()
-    address = get_object_or_404(Address, user = request.user)
+    try:
+        address = get_object_or_404(Address, user = request.user)
+    except:
+        address = None
     return{
         "categories":categories,
         "address":address,

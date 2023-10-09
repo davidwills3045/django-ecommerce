@@ -4,6 +4,8 @@ from django.template import loader
 from .models import Category,Vendor,Product,Productimages,Cartorder,Cartorderitems,ProductReview,Wishlist,Address,Tags
 from django.shortcuts import get_object_or_404
 from taggit.models import Tag
+from django.db.models import Avg
+from .forms import ProductReviewForm
 
 
 def index(request):
@@ -67,12 +69,26 @@ def vendor_details_view(request, vid):
 def product_detail_view(request,pid):
     product = Product.objects.get(pid=pid)
     products = Product.objects.filter(category=product.category).exclude(pid=pid)
+
+    # Getting the reviews related to a product
+    review = ProductReview.objects.filter(product=product)
+
+    # Getting average review
+    average_rating =  ProductReview.objects.filter(product=product).aggregate(rating=Avg('rating'))
+
+
+    # product review form
+    review_form = ProductReviewForm()
+
     p_image = product.p_image.all()
 
     context = {
         "products":product,
         "p_image":p_image,
         "pro":products,
+        "reviews":review,
+        "average_rating":average_rating,
+        "review_form":review_form
     }
     template = loader.get_template("product-detail.html")
     return HttpResponse(template.render(context,request))
@@ -86,7 +102,13 @@ def tag_list(request, tag_slug=None):
         products = products.filter(tags__in=[tag])
 
     context = {
-        "products":products
+        "products":products,
+        "tag":tag,
     }
     template = loader.get_template("tag.html")
     return HttpResponse(template.render(context,request))
+
+def  ajax_add_review(request,pid):
+    product = Product.objects.get(pk=pid)
+    user = request.user
+

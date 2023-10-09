@@ -3,6 +3,7 @@ from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 from django.conf import settings
 from taggit.managers import TaggableManager
+from ckeditor_uploader.fields import RichTextUploadingField
 
 STATUS_CHOICE = (
     ("process","Processing"),
@@ -58,7 +59,8 @@ class Vendor(models.Model):
     title = models.CharField(max_length=100,default="Nestify")
     image= models.ImageField(upload_to=user_directory_path, default="vendor.jpg")
     cover_image= models.ImageField(upload_to=user_directory_path, default="vendor.jpg")
-    description = models.TextField(null=True, blank=True, default="i am an Amazing vendor")
+    # description = models.TextField(null=True, blank=True, default="i am an Amazing vendor")
+    description = RichTextUploadingField(null=True, blank=True, default="i am an Amazing vendor")
 
     address = models.CharField(max_length=100, default="123 main street.")
     contact = models.CharField(max_length=100,default="+123 (456) 789")
@@ -89,12 +91,13 @@ class Product(models.Model):
 
     title = models.CharField(max_length=100, default="Fresh Pear")
     image= models.ImageField(upload_to=user_directory_path, default="product.jpg")
-    description = models.TextField(null=True, blank=True, default="This is the products")
+    # description = models.TextField(null=True, blank=True, default="This is the products")
+    description = RichTextUploadingField(null=True, blank=True, default="This is the products")
 
     price = models.DecimalField(max_digits=99999999999,decimal_places=2,default="1.99")
     old_price = models.DecimalField(max_digits=99999999999,decimal_places=2,default="2.99")
 
-    specifications = models.TextField(null=True, blank=True)
+    specifications = RichTextUploadingField(null=True, blank=True)
     typ = models.CharField(max_length=100, default="Organic", null=True, blank=True)
     stock_count = models.CharField(max_length=100, default="10", null=True, blank=True)
     life = models.CharField(max_length=100, default="100 Days", null=True, blank=True)
@@ -178,7 +181,7 @@ class Cartorderitems(models.Model):
 
 class ProductReview(models.Model):
     user= models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    product= models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    product= models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name="reviews")
     review = models.TextField()
     rating = models.IntegerField(choices=RATING, default=None)
     date = models.DateTimeField(auto_now_add=True)
