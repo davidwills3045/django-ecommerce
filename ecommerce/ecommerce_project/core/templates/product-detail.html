@@ -268,25 +268,27 @@
                                                             <h4 class="mb-30">Customer questions & answers</h4>
                                                             <div class="comment-list">
                                                                 {% for review in reviews reversed %}
-                                                                <div class="single-comment justify-content-between d-flex mb-30">
-                                                                    <div class="user justify-content-between d-flex">
-                                                                        <div class="thumb text-center">
-                                                                            <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" alt="" />
-                                                                            <a href="#" class="font-heading text-brand">{{review.user.username|title}}</a>
-                                                                        </div>
-                                                                        <div class="desc">
-                                                                            <div class="d-flex justify-content-between mb-10">
-                                                                                <div class="d-flex align-items-center">
-                                                                                    <span class="font-xs text-muted">{{review.date}} </span>
-                                                                                </div>
-                                                                                <div class="product-rate d-inline-block">
-                                                                                    <div class="product-rating" style="width: 100%">{{review.rating}}</div>
-                                                                                </div>
+                                                                    <div class="single-comment justify-content-between d-flex mb-30">
+                                                                        <div class="user justify-content-between d-flex">
+                                                                            <div class="thumb text-center">
+                                                                                <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" alt="" />
+                                                                                <a href="#" class="font-heading text-brand">{{review.user.username|title}}</a>
                                                                             </div>
-                                                                            <p class="mb-10">{{review.review}}</p>
+                                                                            <div class="desc">
+                                                                                <div class="d-flex justify-content-between mb-10">
+                                                                                    <div class="d-flex align-items-center">
+                                                                                        <span class="font-xs text-muted">{{review.date}} </span>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        {% for s in review.rating|ljust:review.rating  %}
+                                                                                            <i class="fas fa-star text-warning"></i>
+                                                                                        {% endfor %}
+                                                                                    </div>
+                                                                                </div>
+                                                                                <p class="mb-10">{{review.review}}</p>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
                                                                 {% endfor %}
                                                                 
                                                                
@@ -298,7 +300,12 @@
                                                                 <div class="product-rate d-inline-block mr-15">
                                                                     <div class="product-rating" style="width: 90%"></div>
                                                                 </div>
+                                                                {% if average_rating.rating == None %}
+                                                                <h6>0.0 out of 5.0</h6>
+                                                                {% else %}
                                                                 <h6>{{average_rating.rating|floatformat:1}} out of 5.0</h6>
+                                                                {% endif %}
+                                                                
                                                             </div>
                                                             <div class="progress">
                                                                 <span>5 star</span>
@@ -325,6 +332,8 @@
                                                     </div>
                                                 </div>
                                                 <!--comment form-->
+                                                {% if make_review == True %}
+                                                {% if request.user.is_authenticated %}
                                                 <div class="comment-form">
                                                     <h4 class="mb-15 add-review">Add a review</h4>
                                                     <strong class="text-success" id="review-res"></strong>
@@ -351,6 +360,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {% endif %}
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
