@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.template import loader
 from .models import Category,Vendor,Product,Productimages,Cartorder,Cartorderitems,ProductReview,Wishlist,Address,Tags
 from django.shortcuts import get_object_or_404
@@ -88,7 +88,7 @@ def product_detail_view(request,pid):
         "pro":products,
         "reviews":review,
         "average_rating":average_rating,
-        "review_form":review_form
+        "review_form":review_form,
     }
     template = loader.get_template("product-detail.html")
     return HttpResponse(template.render(context,request))
@@ -112,3 +112,25 @@ def  ajax_add_review(request,pid):
     product = Product.objects.get(pk=pid)
     user = request.user
 
+    review = ProductReview.objects.create(
+        user=user,
+        product=product,
+        review=request.POST['review'],
+        rating=request.POST['rating'],
+    )
+
+    context= {
+        "user":user.username,
+        "review":request.POST['review'] ,
+        "rating":request.POST['rating'] ,
+    }
+
+    average_reviews = ProductReview.objects.filter(product=product).aggregate(rating=Avg("rating"))
+
+    return JsonResponse(
+        {
+        'bool':True,
+        'context':context,
+        'avg_reviews':average_reviews
+        }
+    )

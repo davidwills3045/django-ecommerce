@@ -326,33 +326,24 @@
                                                 </div>
                                                 <!--comment form-->
                                                 <div class="comment-form">
-                                                    <h4 class="mb-15">Add a review</h4>
-                                                    <div class="product-rate d-inline-block mb-30"></div>
+                                                    <h4 class="mb-15 add-review">Add a review</h4>
+                                                    <strong class="text-success" id="review-res"></strong>
                                                     <div class="row">
                                                         <div class="col-lg-8 col-md-12">
-                                                            <form class="form-contact comment_form" action="#" id="commentForm">
+                                                            <form class="form-contact comment_form hide-comment-form" action="http://127.0.0.1:8000/ajax-add-review/{{products.id}}" id="commentForm" method="POST">
+                                                                {% csrf_token %}
                                                                 <div class="row">
                                                                     <div class="col-12">
                                                                         <div class="form-group">
-                                                                            {% comment %} <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea> {% endcomment %}
-                                                                        </div>
-                                                                    </div>
-                                                                    {% comment %} <div class="col-sm-6">
-                                                                        <div class="form-group">
-                                                                            <input class="form-control" name="name" id="name" type="text" placeholder="Name" />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-sm-6">
-                                                                        <div class="form-group">
-                                                                            <input class="form-control" name="email" id="email" type="email" placeholder="Email" />
+                                                                            {{review_form.review}}
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <div class="form-group">
-                                                                            <input class="form-control" name="website" id="website" type="text" placeholder="Website" />
+                                                                            {{review_form.rating}}
                                                                         </div>
                                                                     </div>
-                                                                </div> {% endcomment %}
+                                                                </div>
                                                                 <div class="form-group">
                                                                     <button type="submit" class="button button-contactForm">Submit Review</button>
                                                                 </div>
