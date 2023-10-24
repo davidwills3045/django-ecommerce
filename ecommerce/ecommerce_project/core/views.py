@@ -166,9 +166,9 @@ def filter_product(request):
 
     if len(categories) > 0 :
         products = products.filter(category__id__in=categories).distinct() #field look up
-
+ 
     if len(vendors) > 0 :
-        products = products.filter(vendor__id__in=vendors).distinct()
+        products = products.filter(vendor__vid__in=vendors).distinct()
 
     data = render_to_string("async/product-list.html",{"products":products})
     return JsonResponse({"data": data})

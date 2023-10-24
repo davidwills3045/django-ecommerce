@@ -69,13 +69,12 @@ $(document).ready(function(){
             let filter_value = $(this).val()
             let filter_key = $(this).data("filter")
 
-            // console.log("filter value is:", filter_value);
-            // console.log("filter value is:", filter_key);
+            // console.log(filter_value,filter_key);
 
             filter_object[filter_key] = Array.from(document.querySelectorAll('input[data-filter='+  filter_key +']:checked')).map(function(element){
                 return element.value
             })
-        })
+        })      
         console.log(filter_object);
         $.ajax({
             url:'/filter-product',
@@ -86,7 +85,17 @@ $(document).ready(function(){
             },
             success: function(response) {
                 console.log(response );
+                $("#filtered-product").html(response.data)
             }
         })
+    })
+    $("#max_price").on("blur", function() {
+        let min_price = $(this).attr("min")
+        let max_price = $(this).attr("max")
+        let current_price = $(this).val()
+
+        console.log("current price is:",current_price,);
+        console.log("max price is:",max_price,);
+        console.log("min price is:",min_price,);
     })
 }) 
