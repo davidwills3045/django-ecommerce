@@ -60,10 +60,16 @@ $("#commentForm").submit(function(e){
 
 
 $(document).ready(function(){
-    $(".filter-checkbox").on("click",function() {
+    $(".filter-checkbox, #price-filter-btn").on("click",function() {
         console.log("a check box has been clicked");
 
         let filter_object = {}
+
+        let min_price = $("#max_price").attr("min") 
+        let max_price = $("#max_price").val()
+
+        filter_object.min_price = min_price
+        filter_object.max_price = max_price
 
         $(".filter-checkbox").each(function() {
             let filter_value = $(this).val()
@@ -77,7 +83,7 @@ $(document).ready(function(){
         })      
         console.log(filter_object);
         $.ajax({
-            url:'/filter-product',
+            url:'http://127.0.0.1:8000/filter-product/',
             data: filter_object,
             dataType: 'json',
             beforeSend: function(){
@@ -94,8 +100,23 @@ $(document).ready(function(){
         let max_price = $(this).attr("max")
         let current_price = $(this).val()
 
-        console.log("current price is:",current_price,);
-        console.log("max price is:",max_price,);
-        console.log("min price is:",min_price,);
+        if (current_price < parseInt(min_price) || current_price > parseInt(max_price)) {
+            min_Price = Math.round(min_price * 100) / 100
+            max_Price = Math.round(max_price * 100) / 100
+            alert("price must be between $"+min_Price+ " and $"+ max_Price)
+            $(this).val(min_Price)
+            $("#range").val(min)
+
+            $(this).focus()
+            return false
+        }
+
     })
 }) 
+
+
+
+// Add to cart functionality 
+$("#add-to-cart-btn").on("click", function(){
+    
+})
