@@ -63,10 +63,13 @@
                                             </div>
                                             <div class="clearfix product-price-cover">
                                                 <div class="product-price primary-color float-left">
-                                                    <span class="current-price text-brand">{{products.price}}</span>
+                                                    <span class="current-price text-brand">
+                                                        {% comment %} $<span class="current-price text-brand" id="current-product-price">{{products.price}}</span> {% endcomment %}
+                                                        $<span class="current-product-price-{{ products.id}}">{{products.price}}</span>
+                                                    </span>
                                                     <span>
                                                         <span class="save-price font-md color3 ml-15">-{{products.get_percentage|floatformat:0}}% Off</span>
-                                                    <span class="old-price font-md ml-15">{{products.old_price}}</span>
+                                                    <span class="old-price font-md ml-15">${{products.old_price}}</span>
                                                     </span>
                                                 </div>
                                             </div>
@@ -92,9 +95,18 @@
                                                     <input type="number" value="1" name="" id="product-quantity" class="w-25"> 
                                                     <br>
                                                 <div class="product-extra-link2">
-                                                    <input type="hidden" class="product-id" value="{{products.id}}">
-                                                    <input type="hidden" class="product-title" value="{{products.title}}">
-                                                    <button type="submit" class="button button-add-to-cart" id="add-to-cart-btn"><i class="fi-rs-shopping-cart"></i>Add to cart</button>
+                                                    {% comment %} <input type="hidden" class="product-id" value="{{products.id}}">
+                                                    <input type="hidden" class="product-title" value="{{products.title}}"> {% endcomment %}
+
+                                                    <input type="hidden" value="1" id="product-quantity" class="product-quantity-{{ products.id}}">
+                                                    <input type="hidden" class="product-pid-{{ products.id }}" value="{{products.pid}}">
+                                                    <input type="hidden" class="product-image-{{ products.id}}" value="{{ products.image.url}}">
+                                                    <input type="hidden" class="product-id-{{products.id}}" value="{{products.id }}">
+                                                    <input type="hidden" class="product-title-{{products.id}}" value="{{products.title }}">
+
+                                                    
+                                                    <button type="submit" class="button button-add-to-cart add-to-cart-btn" data-index="{{ products.id }}"  id="add-to-cart-btn"><i class="fi-rs-shopping-cart"></i>Add to cart</button>
+
                                                     <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                     <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                                 </div>
@@ -404,7 +416,9 @@
                                                             <span> </span>
                                                         </div>
                                                         <div class="product-price">
-                                                            <span>${{pro.price}}</span>
+                                                            <span>
+                                                                $<span class="current-product-price-{{ product.id}}">{{pro.price}}</span>
+                                                            </span>
                                                             <span class="old-price">${{pro.old_price}}</span>
                                                         </div>
                                                     </div>
