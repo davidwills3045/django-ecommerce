@@ -43,9 +43,13 @@ INSTALLED_APPS = [
     'taggit',
     'ckeditor',
 
+    # paypal intergration
+    "paypal.standard.ipn",
+
     # Custom apps
     'core',
     'userauths',
+    
 ]
 
 MIDDLEWARE = [
@@ -166,3 +170,6 @@ CKEDITOR_CONFIGS = {
         ),
     }
 }
+
+PAYPAL_RECEIVER_EMAIL = 'sb-c5xgx6555500@business.example.com'
+PAYPAL_TEST = True

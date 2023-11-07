@@ -30,5 +30,21 @@ urlpatterns = [
     # add to cart
     path('add-to-cart/', views.add_to_cart, name='add_to-cart'),
 
+    # cart page url
+    path('cart/', views.cart_view, name='cart_view'),
 
+    # delete from cart
+    path('delete-from-cart/', views.delete_item_form_cart, name='delete-from-cart'),
+
+    # update from cart
+    path('update-cart/', views.update_cart, name='update-cart'),
+
+    # checkout
+    path('checkout/', views.checkout_view, name='checkout'),
+
+    # payment succesful
+    path('payment-completed/', views.payment_completed_view, name='payment-completed'),
+
+    # payment failed
+    path('payment-failed/', views.payment_failed_view, name='payment-failed'),
 ]

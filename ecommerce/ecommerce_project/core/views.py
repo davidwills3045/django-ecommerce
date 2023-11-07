@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse,JsonResponse
 from django.template import loader
 from .models import Category,Vendor,Product,Productimages,Cartorder,Cartorderitems,ProductReview,Wishlist,Address,Tags
@@ -7,6 +7,7 @@ from taggit.models import Tag
 from django.db.models import Avg
 from .forms import ProductReviewForm
 from django.template.loader import render_to_string 
+from django.contrib import messages
 
 
 def index(request):
@@ -211,3 +212,61 @@ def add_to_cart(request):
         'totalcartitems': len(request.session['cart_data_obj']),
         })
 
+
+def cart_view(request):
+    cart_total_amount = 0
+    if "cart_data_obj" in request.session:
+        for product_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+        return render(request, "cart.html",{"cart_data":request.session['cart_data_obj'],'totalcartitems': len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})  
+    else:
+        # return render(request, "cart.html",{'totalcartitems': len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})  
+        messages.warning(request, "Your Cart is empty")
+        return redirect("index")
+
+def delete_item_form_cart(request):
+    product_id = str(request.GET['id'])
+    if 'cart_data_obj' in request.session:
+        if product_id in request.session['cart_data_obj']:
+            cart_data = request.session['cart_data_obj']
+            del request.session['cart_data_obj'][product_id]
+            request.session['cart_data_obj'] = cart_data
+
+    cart_total_amount = 0
+    if "cart_data_obj" in request.session:
+        for product_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+
+    context = render_to_string("cart-list.html",{"cart_data":request.session['cart_data_obj'],'totalcartitems': len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
+    return JsonResponse({"data":context,'totalcartitems': len(request.session['cart_data_obj'])})
+
+def update_cart(request):
+    product_id = str(request.GET['id'])
+    product_qty = request.GET['qty']
+
+    if 'cart_data_obj' in request.session:
+        if product_id in request.session['cart_data_obj']:
+            cart_data = request.session['cart_data_obj']
+            cart_data[str(request.GET['id'])]['qty'] = product_qty
+            request.session['cart_data_obj'] = cart_data
+
+    cart_total_amount = 0
+    if "cart_data_obj" in request.session:
+        for product_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+
+    context = render_to_string("cart-list.html",{"cart_data":request.session['cart_data_obj'],'totalcartitems': len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})
+    return JsonResponse({"data":context,'totalcartitems': len(request.session['cart_data_obj'])})
+
+def checkout_view(request):
+    cart_total_amount = 0
+    if "cart_data_obj" in request.session:
+        for product_id, item in request.session['cart_data_obj'].items():
+            cart_total_amount += int(item['qty']) * float(item['price'])
+        return render(request, "checkout.html",{"cart_data":request.session['cart_data_obj'],'totalcartitems': len(request.session['cart_data_obj']),'cart_total_amount':cart_total_amount})  
+    
+def payment_completed_view(request):
+    return render(request,'payment-completed.html')
+
+def payment_failed_view(request):
+    return render(request,'payment-failed.html')
