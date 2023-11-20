@@ -151,6 +151,8 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "darkly",
 }
 
+LOGIN_URL = "sign-in"
+
 AUTH_USER_MODEL = "userauths.User"
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
@@ -171,5 +173,5 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-PAYPAL_RECEIVER_EMAIL = 'sb-c5xgx6555500@business.example.com'
+PAYPAL_RECEIVER_EMAIL = 'businessdestiny@gmail.com'
 PAYPAL_TEST = True
