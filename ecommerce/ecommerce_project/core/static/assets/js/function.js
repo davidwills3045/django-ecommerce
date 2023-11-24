@@ -68,6 +68,9 @@ $(document).ready(function(){
         let min_price = $("#max_price").attr("min") 
         let max_price = $("#max_price").val()
 
+        console.log("min_price:", min_price);
+        console.log("max_price:", max_price);
+
         filter_object.min_price = min_price
         filter_object.max_price = max_price
 
@@ -83,7 +86,7 @@ $(document).ready(function(){
         })      
         console.log(filter_object);
         $.ajax({
-            url:'http://127.0.0.1:8000/filter-product/',
+            url:'/filter-product',
             data: filter_object,
             dataType: 'json',
             beforeSend: function(){

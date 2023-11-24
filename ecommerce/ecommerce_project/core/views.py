@@ -333,3 +333,16 @@ def payment_completed_view(request):
 @login_required
 def payment_failed_view(request):
     return render(request,'payment-failed.html')
+
+
+def account(request):
+    template = loader.get_template("account.html")
+    return HttpResponse(template.render())
+
+def about(request):
+    template = loader.get_template("about.html")
+    return HttpResponse(template.render())
+
+def contact(request):
+    template = loader.get_template("contact.html")
+    return HttpResponse(template.render())
