@@ -130,8 +130,6 @@ import os
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR/'static',]
-STATIC_ROOT = BASE_DIR/'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT =os.path.join(BASE_DIR,'media')
@@ -140,21 +138,6 @@ MEDIA_ROOT =os.path.join(BASE_DIR,'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-{
-    "builds": [
-      {
-        "src": "django_app_name/wsgi.py",
-        "use": "@vercel/python"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "django_app_name/wsgi.py"
-      }
-    ]
-}
 
 JAZZMIN_SETTINGS = {
     "site_header": "Davidwills project",
